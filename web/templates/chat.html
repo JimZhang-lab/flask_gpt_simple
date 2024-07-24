@@ -40,9 +40,9 @@
             </select>
             
           </div>
-        </div>
+         </div>
 
-          <div id="chat-container">
+          <div id="chat-container" >
             <div id="chat-messages">
                 <div id="result">
                     <div class="header brand-name" style="
@@ -83,16 +83,16 @@
                   </div>
             </div>
          </div>
-
           
             <div class="chat-input relative">
-                <div class="message-input-wrapper">
+                <div class="input-box">
                     <textarea type="text" id="message-input" placeholder="请输入您的内容"></textarea>
-                
-                    <div id="send-button">发送</div>
-                        
+                    <div id="send-button">发送</div>     
                 </div>
             </div>
+            <div class="disclaimer">
+                <u> JimiGPT 9 Version</u>. Jimi AI is a natural language processing company based in San Francisco, California. We are focused on building the best AI language models and tools for businesses, developers, and researchers. We are also working on open-source projects that help developers and businesses integrate AI into their products and services.
+             </div>
         </div>
     </div>
 </body>
@@ -338,7 +338,7 @@
         model_name: model_name,
         model_id: selectedValue
     }));
-}
+    }
 
     
     sendButton.addEventListener("click", sendMessage);
@@ -456,10 +456,12 @@
     #chat-container {
         width: 1000px;
         margin: 0 auto;
+        /* 添加聊天框
         border-width: 1px;
         border-style: solid;
         border-color: #e5e7eb;
         border-radius: 8px;
+        */
         height: calc(100% - 150px);
         box-sizing: content-box;
         position: relative;
@@ -553,12 +555,15 @@
         align-items: center;
         justify-content: center;
 
-        gap: 50px;
+        /*gap-top: 50px;*/
         color: #343541;
     }
 
     .right-panel > * {
         max-width: 70%;
+    }
+    .right-top-nav {
+        margin-down: 30px;
     }
     .right-top-panel-left {
       position: absolute;
@@ -567,7 +572,7 @@
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
-      padding: 10px;
+      padding: 5px;
   }
   .select-model {
       border: 0;
@@ -630,7 +635,7 @@
 
     .absolute {
         position: absolute;
-        bottom: 20px;
+        bottom: 10px;
     }
     .chat-input {
         display: flex;
@@ -642,11 +647,12 @@
 
     .input-box {
         border: 1px solid #e5e5e5;
+        width: 720px;
         border-radius: 5px;
         display: flex;
 
-        margin: 0 10px;
-        box-shadow: 0 0 20px 2px #e8e8e8;
+        margin: 0 0px;
+        box-shadow: 0 0 10px 2px #e8e8e8;
     }
 
     .input-box input[type="text"] {
