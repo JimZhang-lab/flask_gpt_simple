@@ -5,7 +5,7 @@
 - 仍在开发中.
 ## 1 安装依赖
 ```
-cd flask_gpt_demo
+cd flask_gpt_simple
 pip install -r requirements.txt
 ```
 ## 2 运行程序
