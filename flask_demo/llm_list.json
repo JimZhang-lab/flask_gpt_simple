@@ -1,0 +1,12 @@
+{
+    "kimi":{
+        "model":"moonshot-v1-8k",
+        "api_key": "sk-...",
+        "base_url": "https://api.moonshot.cn/v1"
+    },
+    "ChatGPT-4o":{
+      "model": "gpt-4o",
+      "api_key":"",
+      "base_url":""  
+    }
+}

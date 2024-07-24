@@ -1,0 +1,173 @@
+$.ajax({
+    type: "POST",
+    url: "/chat_query",
+    data: {
+         "question": $("#question").val()
+    },
+    success: function(data) {
+        $("#result").html(data);
+    },
+    error: function(xhr, status, error) {
+        console.log(xhr.responseText);
+    }
+});
+#result {
+    font-size: 18px;
+    font-weight: bold;
+    color: #343541;
+    text-align: center;
+    margin-top: 20px;
+    background-color: #f7f7f8;
+    border-radius: 5px;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+<script type="text/javascript">
+    $(function() {
+        $("#submitbtn").click(function(event) {
+            event.preventDefault(); // 阻止默认的表单提交行为
+            $("submitbtn").prop('disabled', true);
+            $("#result").html("正在查询...");
+            var source = new EventSource("/chat_query?question=" + $("#question").val());
+            var begin_output = false;
+            source.onmessage = function(event) {
+                if (begin_output) {
+                    if (event.data === '[DONE]') {
+                        $("submitbtn").prop('disabled', false);
+                        source.close();
+                    } else {
+                        $("#result").html($("#result").html() + event.data);
+                    }
+                } else {
+                    begin_output = true;
+                    $("#result").html("");
+                }
+            };
+        });
+    });
+</script>
+
+
+<script>
+    const chatMessages = document.getElementById("chat-messages");
+    const messageInput = document.getElementById("question");
+    const sendButton = document.getElementById("submitbtn");
+    function sendMessage() {
+        const message = messageInput.value;
+        console.log(message);
+        if (message.trim() === "") {
+            return;
+        }
+
+        // 创建一个新的消息元素，并添加到聊天框
+        let messageElement = `<div class="flex-right">
+            <div class="time-remark-wrapper mr10">
+                <span class="time">${getNowTime()}</span>
+                <div class="message user-message" style="display: inline-block;">
+                    ${message}
+                </div>
+            </div>
+            <img src="../static/img/chatui/user.png" class="avatar"/>
+        </div>`
+        chatMessages.innerHTML += messageElement;
+
+        messageInput.value = "";
+        sendToServer(message);
+    }
+    function getNowTime() {
+        var currentTime = new Date();
+        var year = currentTime.getFullYear();
+        var month = currentTime.getMonth() + 1; // 月份从 0 开始，所以要加 1
+        var day = currentTime.getDate();
+        var hours = currentTime.getHours();
+        var minutes = currentTime.getMinutes();
+        var seconds = currentTime.getSeconds();
+
+        // 格式化为两位数
+        if (month < 10) {
+            month = '0' + month;
+        }
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (hours < 10) {
+            hours = '0' + hours;
+        }
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+
+        var formattedTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        return formattedTime;
+    }
+    function formateMarkdown(message) {
+
+        var renderer = new marked.Renderer();
+        renderer.code = function (code, language) {
+            var highlightedCode = hljs.highlightAuto(code).value;
+            return '<pre><code class="hljs ' + language + '">' + highlightedCode + '</code></pre>';
+        };
+
+        marked.setOptions({
+            renderer: renderer,
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false,
+        })
+
+        var parsedHTML = marked.parse(message);
+        let messageHTML = ` <div class="flex-left">
+            <img src="../static/img/chatui/gpt.png" class="avatar mr10"/>
+            <div class="time-remark-wrapper">
+                <span class="time">${getNowTime()}</span>
+                <div class="message bot-message" style="display: inline-block;">
+                    ${parsedHTML}
+                </div>
+            </div>
+          
+        </div>`
+        chatMessages.innerHTML += messageHTML;
+    }
+    function sendToServer(message) {
+    
+        // 使用AJAX发送GET请求
+        const url = `/chat_query?question=${message}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        $("#result").html("正在查询...");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                // 服务器响应成功
+                $("#result").html("");
+                try {
+                    // 解析服务器响应
+                    const response = xhr.responseText;
+                    // 提取服务器回复的消息
+                    const botMessage = response.msg;
+                    // 创建回复消息的元素，并添加到聊天框
+                    formateMarkdown(botMessage);
+    
+                } catch (error) {
+                    console.error("Error parsing JSON response:", error);
+                }
+            }
+        };
+        xhr.send();
+    }
+    sendButton.addEventListener("click", sendMessage);
+
+    
+</script>
+
+<div class="disclaimer">
+    <u> JimiGPT 9 Version</u>. Jimi AI is a natural language processing company based in San Francisco, California. We are focused on building the best AI language models and tools for businesses, developers, and researchers. We are also working on open-source projects that help developers and businesses integrate AI into their products and services.
+ </div>
