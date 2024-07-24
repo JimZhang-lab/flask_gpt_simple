@@ -16,5 +16,5 @@ run main.py
 在 llm_list.json 中添加你的 api 配置, 运行项目自动读取.
 ## chat界面展示
 ![image](https://github.com/smart-James/some_gpt_simple/blob/main/img_folder/chat.png)
-![image](https://github.com/smart-James/some_gpt_simple/blob/main/img_folder/chat_2.png)
+![image](https://github.com/smart-James/flask_gpt_simple/blob/main/img_folder/chat_v2.png)
 
