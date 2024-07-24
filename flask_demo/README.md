@@ -10,3 +10,5 @@ run main.py
 ```
 ## 3 模型配置
 在 llm_list.json 中添加你的 api 配置, 运行项目自动读取.
+## chat界面展示
+![Uploading Screenshot 2024-07-24 at 18.06.04.png…]()
