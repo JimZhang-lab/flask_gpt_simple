@@ -15,5 +15,6 @@ run main.py
 ## 3 模型配置
 在 llm_list.json 中添加你的 api 配置, 运行项目自动读取.
 ## chat界面展示
-![image](https://github.com/smart-James/some_gpt_simple/blob/main/chat.png)
+![image](https://github.com/smart-James/some_gpt_simple/blob/main/img_folder/chat.png)
+
 
