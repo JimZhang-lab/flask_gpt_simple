@@ -5,4 +5,6 @@ cd flask_demo
 pip install -r requirements.txt
 ```
 ## 2 运行程序
+```
 run main.py
+```
