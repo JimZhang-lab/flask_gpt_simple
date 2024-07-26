@@ -13,9 +13,9 @@ chat = Blueprint('chat', __name__)
 def index_page():
     return render_template('chat.html')
 
-@chat.route('/test')
-def test_page():
-    return render_template('test.html')
+# @chat.route('/test')
+# def test_page():
+#     return render_template('test.html')
 
 # 获取模型列表
 @chat.route('/chat_get_model_list', methods=['GET'])
