@@ -6,6 +6,7 @@
 ## 7.26 更新
 - 重写了前端界面，增加了焕肤功能
 - 分离了前端 js 文件
+![image](https://github.com/smart-James/flask_gpt_simple/blob/main/img_folder/chat_v3.png)
 ## 1 安装依赖
 ```
 cd flask_gpt_simple
