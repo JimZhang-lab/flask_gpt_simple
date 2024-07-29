@@ -3,6 +3,13 @@
 - 框架：flask+html+css+js
 - 已经实现gpt对话框和模型选择，以及一些前端的介绍界面
 - 仍在开发中.
+
+## 7.29 更新
+- 增加 GPT_SoVITS 后端接口
+- 项目接口参考：<a href="https://github.com/X-T-E-R/GPT-SoVITS-Inference">GPT-SoVITS-Inference</a> 和 <a href="https://github.com/RVC-Boss/GPT-SoVITS">GPT-SoVITS</a>
+- 更新requirements.txt
+- 配置 GPT_SoVITS 请参考：<a href="https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e">GPT-SoVITS指南</a>
+
 ## 7.26 更新
 - 重写了前端界面，增加了焕肤功能
 - 分离了前端 js 文件
