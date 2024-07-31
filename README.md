@@ -12,6 +12,7 @@
 <video width="320" height="240" controls>
     <source src="https://github.com/smart-James/some_gpt_simple/blob/main/img_folder/chat.mov" type="video/mov">
 </video>
+
 ## 7.26 更新
 - 重写了前端界面，增加了焕肤功能
 - 分离了前端 js 文件
