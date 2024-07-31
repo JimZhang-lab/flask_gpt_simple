@@ -50,14 +50,59 @@ function getNowTime() {
     seconds;
   return formattedTime;
 }
-const example_item = document.getElementById("example_item");
-document.querySelectorAll(".example_item").forEach((item) => {
-  item.addEventListener("click", function () {
-    const text = item.textContent.trim();
-    // console.log(text);
-    messageInput.value = text;
-  });
-});
+// const example_item = document.getElementById("example_item");
+// document.querySelectorAll(".example_item").forEach((item) => {
+//   item.addEventListener("click", function () {
+//     const text = item.textContent.trim();
+//     // console.log(text);
+//     messageInput.value = text;
+//   });
+// });
+const example_info = document.getElementById("example_info");
+
+const example_info_msg = {
+  "example_1": "你好，我是 GPT-3 机器人。",
+  "example_2": "你好，我是 GPT-2 机器人。",
+  "example_3": "你好，我是 GPT-1 机器人。",
+  "example_4": "你好，我是 GPT-0 机器人。",
+};
+
+
+let currentIndex = 0;
+const keys = Object.keys(example_info_msg);
+let currentText = "";
+let charIndex = 0;
+let isTyping = false;
+
+const view_example_info = () => {
+  currentText = example_info_msg[keys[currentIndex]];
+  charIndex = 0;
+  example_info.innerHTML = "";
+  isTyping = true;
+  typeText();
+};
+
+const typeText = () => {
+  if (!isTyping) return; // 如果已经停止显示，则直接返回
+
+  if (charIndex < currentText.length) {
+    example_info.innerHTML += currentText.charAt(charIndex);
+    charIndex++;
+    setTimeout(typeText, 100); // 每100毫秒显示一个字符
+  } else {
+    isTyping = false;
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % keys.length; // 切换到下一条消息
+      view_example_info();
+    }, 2000); // 显示完当前消息后等待2秒再切换
+  }
+};
+// 初始显示
+view_example_info();
+
+
+
+
 
 messageInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
@@ -391,14 +436,21 @@ async function fetchChatStream(message, model_name, selectedValue) {
     send_message_btn.removeAttribute("disabled");
   } catch (error) {
     // 处理错误信息
+    const loadingChat = document.getElementById("loadingChat");
+    if (loadingChat) {
+      loadingChat.remove();
+    }
+
     errorInfoChatMessageBubble(error);
     // 重新启用发送按钮
     send_message_btn.removeAttribute("disabled");
     // 可以在这里添加更多的错误处理逻辑，例如显示错误消息给用户
   }
 }
-send_message_btn.addEventListener("click", sendMessage);
-
+send_message_btn.addEventListener("click", () => {
+  isTyping = false; // 停止显示
+  sendMessage();
+});
 async function fetchChatAudio(message) {
   try {
     const res = await fetch("/chat_audio", {
