@@ -1,0 +1,23 @@
+task: {
+    "uuid": "030bff5f-4a09-490e-931d-ba4330cce656",
+    "task_type": "text",
+    "text": "先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。",
+    "character": "花火",
+    "emotion": "default",
+    "format": "wav",
+    "sample_rate": 32000,
+    "speed": 1.0,
+    "stream": false,
+    "save_temp": false,
+    "prompt_language": "auto",
+    "text_language": "auto",
+    "batch_size": 10,
+    "top_k": 5,
+    "top_p": 0.8,
+    "temperature": 0.8,
+    "cut_method": "auto_cut",
+    "max_cut_length": 50,
+    "seed": -1,
+    "parallel_infer": true,
+    "repetition_penalty": 1.35
+}

@@ -168,3 +168,4 @@ cython_debug/
 .DS_Store?
 db_config.py
 key.txt
+llm_list.json

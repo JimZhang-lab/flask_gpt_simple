@@ -3,6 +3,15 @@
 - 框架：flask+html+css+js
 - 已经实现gpt对话框和模型选择，以及一些前端的介绍界面
 - 仍在开发中.
+
+## 7.31更新
+- 完善tts 接口，增加了语音合成功能，需提前配置好语言模型
+- 优化了代码结构
+- 优化了 markdown 文字格式显示，但任未能输出公式
+- 更新演示视频
+<video width="320" height="240" controls>
+    <source src="https://github.com/smart-James/some_gpt_simple/blob/main/img_folder/chat.mov" type="video/mov">
+</video>
 ## 7.26 更新
 - 重写了前端界面，增加了焕肤功能
 - 分离了前端 js 文件
