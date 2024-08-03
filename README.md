@@ -6,6 +6,7 @@
 
 # 8.3更新
 - 添加 live2d 和口型配对功能，可以和你的二次元老婆聊天了！
+![image](https://github.com/smart-James/flask_gpt_simple/blob/main/img_folder/chat_v5.png)
 
 ## 7.31更新
 - 完善tts 接口，增加了语音合成功能，需提前配置好语言模型
