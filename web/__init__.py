@@ -4,6 +4,7 @@ from .views.chat import chat
 from .views.about import about
 from .views.contact import contact
 from .views.login import login
+from .views.live_2d import live_2d
 
 
 def create_app(config_name):
@@ -16,6 +17,7 @@ def create_app(config_name):
     app.register_blueprint(about)
     app.register_blueprint(contact)
     app.register_blueprint(login)
+    app.register_blueprint(live_2d)
     
     return app
 

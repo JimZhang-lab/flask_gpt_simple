@@ -5,6 +5,7 @@ import json
 from openai import OpenAI
 import requests
 from web.utils.get_models import get_model_lists,chat_response
+# from web.utils.live2d_control import tts_and_play_audio
 # from flask_restful import Api
 
 chat = Blueprint('chat', __name__)
@@ -17,7 +18,7 @@ def index_page():
 
 @chat.route('/test')
 def test_page():
-    return render_template('test.html')
+    return render_template('live2d_llm.html')
 
 # 获取模型列表
 @chat.route('/chat_get_model_list', methods=['GET'])
@@ -70,6 +71,10 @@ def send_audio():
             response = requests.post(url,json=data)
             if response.status_code == 200:
                 print("[done]")
+                with open('web/utils/output.wav', 'wb') as file:
+                    file.write(response.content)
+                print("文件已下载到本地")
+                # tts_and_play_audio()
                 return response.content
             else:
                 print(f"请求失败，错误代码：{response.status_code}")

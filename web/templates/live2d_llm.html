@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script src="../static/js/live2dcubismcore.min.js"></script>
+    <script src="../static/js/live2d.min.js"></script>
+    <script src="../static/js/pixi.min.js"></script>
+
+    <!-- if only Cubism 4 support-->
+    <script src="../static/js/cubism4.min.js"></script>
+
+    <script src="../static/js/jquery-3.1.1.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <div id="control">
+      <label>数字人模型</label>
+      <select id="model_list"></select>
+      <button id="update_model">更新模型</button>
+      <br />
+      <label>眼神跟随鼠标</label>
+      <input type="radio" name="eyes" value="true" checked />
+      <label>跟随鼠标</label
+      ><input type="radio" id="option2" name="eyes" value="false" /><label
+        >前方直视</label
+      >
+      <br />
+      <label>语速</label>
+      <input type="search" id="speed_factor" style="width: 200px" value="1.0" />
+      <br /><br />
+
+      <textarea
+        id="text_talk"
+        style="width: 400px; height: 200px; font-size: 15px"
+      ></textarea>
+
+      <button id="start_stream">流式合成语音</button>
+      <button id="start">并行合成语音</button>
+    </div>
+
+    <script type="text/javascript" src="../static/js/live2d_llm.js"></script>
+
+    <style>
+      #control {
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        color: white;
+        font-size: 18px;
+      }
+    </style>
+  </body>
+</html>
