@@ -3,8 +3,9 @@
 - 框架：flask+html+css+js
 - 已经实现gpt对话框和模型选择，以及一些前端的介绍界面
 - 目前项目框架基本完成，后续会持续更新优化代码和功能。
-- 该项目参考了<a href="https://github.com/X-T-E-R/-GPT-SoVITS-Inference">GPT-SoVITS-Inference</a> , <a href="https://github.com/RVC-Boss/GPT-SoVITS">GPT-SoVITS</a> 以及  <a href="https://github.com/modelscope/FunASR">FunASR</a>，感谢到大佬们的开源贡献。
+- 该项目参考了<a href="https://github.com/X-T-E-R/-GPT-SoVITS-Inference">GPT-SoVITS-Inference</a> , <a href="https://github.com/RVC-Boss/GPT-SoVITS">GPT-SoVITS</a> 以及  <a href="https://github.com/modelscope/FunASR">FunASR</a>，感谢大佬们的开源贡献。
 - 配置 GPT_SoVITS 请参考：<a href="https://www.yuque.com/baicaigongchang1145haoyuangong/ib3g1e">GPT-SoVITS指南</a>
+- tts 和主程序是分离的，可以单独运行，tts 接口需要提前配置好语言模型，不分离版本在feature分支中。
 
 ## 8.5更新
 - 增加了 ASR 功能，可以用语音输入对话。
