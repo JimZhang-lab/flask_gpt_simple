@@ -10,7 +10,7 @@ from .views.live_2d import live_2d
 def create_app(config_name):
     # name of the app, you can change it to anything you like
     app = Flask('flask_demo', template_folder='web/templates', static_folder='web/static')
-
+    
     # register blueprints
     app.register_blueprint(index)
     app.register_blueprint(chat)

@@ -174,6 +174,21 @@
           </div>
 
         </div>
+        <!-- <form class="fixed">
+          <label for="chat" class="sr-only">Your message</label>
+          <div class="flex items-center py-2 px-3 bg-gray-50 rounded-lg dark:bg-gray-700">
+              <button type="button" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
+              </button>
+              <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path></svg>
+              </button>
+              <textarea id="chat" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
+                  <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                  <svg class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+              </button>
+          </div>
+      </form> -->
         <div class="fixed right-20
               justify-center flex flex-row mr-20" style="
               position: fixed;
@@ -181,11 +196,28 @@
               left: 130px;
               width: 100%;
             ">
-          <input id="message-input" type="text" placeholder="Please enter your message here" class="basis-11/12 mr-2 input input-bordered input-md w-full
+            <label class="basis-11/12 input input-bordered flex items-center w-full m-0 p-0
                   sm:max-w-xs md:max-w-sm lg:max-w-xl xl:max-w-3xl 2xl:max-w-4xl
                   3xl:max-w-5xl
-                  " />
+            ">
+              
+              <input id="message-input" type="text" placeholder="Please enter your message here" class="input input-md w-full focus: border-none
+                  " />  
+                  <button class="btn bg-transparent border-0 p-0 m-2 hover:bg-transparent focus:bg-transparent" id="microphone-btn">
+                  <svg class="w-6 h-6 fill-[#8e8e8e]" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" id="microphone-icon">
 
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z"></path>
+                  <!-- disabled <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L472.1 344.7c15.2-26 23.9-56.3 23.9-88.7V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 21.2-5.1 41.1-14.2 58.7L416 300.8V96c0-53-43-96-96-96s-96 43-96 96v54.3L38.8 5.1zM344 430.4c20.4-2.8 39.7-9.1 57.3-18.2l-43.1-33.9C346.1 382 333.3 384 320 384c-70.7 0-128-57.3-128-128v-8.7L144.7 210c-.5 1.9-.7 3.9-.7 6v40c0 89.1 66.2 162.7 152 174.4V464H248c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H344V430.4z"></path> -->
+                </svg></button>
+            </label>
+
+          <!-- <input id="message-input" type="text" placeholder="Please enter your message here" class="basis-11/12 mr-2 input input-bordered input-md w-full
+                  sm:max-w-xs md:max-w-sm lg:max-w-xl xl:max-w-3xl 2xl:max-w-4xl
+                  3xl:max-w-5xl
+                  " />   -->
+          
+          
           <button class="btn basis-1/12
                   px-8 z-30 py-4 bg-rose-400 rounded-md text-white 
                   relative font-semibold 
@@ -208,10 +240,34 @@
     </div>
   </div>
   </div>
+  <dialog id="recording-dialog" class="modal modal-bottom sm:modal-middle">
+    <div class="flex flex-row max-auto">
+      <div class="modal-box justify-center items-center">
+        <div class="flex-1 mb-5">
+          <h2 class="text-center">Recording...</h2>
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-row justify-center items-center">
+            <span class="loading loading-bars loading-xs"></span>
+            <span class="loading loading-bars loading-sm"></span>
+            <span class="loading loading-bars loading-md"></span>
+            <span class="loading loading-bars loading-lg"></span>
+          </div>
+        </div>
+        <div class="flex-1 modal-action justify-center items-center">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn btn-error text-amber-50" id="stop-recording-btn">Stop</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <script src="../static/js/chat.js"></script>
   <script src="../static/js/auto_audio_live2d.js"></script>
   <!--<script type="text/javascript" src="../static/js/live2d_llm.js"></script>-->
-
+  
 </body>
 
 </html>

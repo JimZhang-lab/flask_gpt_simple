@@ -5,6 +5,8 @@ import json
 from openai import OpenAI
 import requests
 from web.utils.get_models import get_model_lists,chat_response
+from web.utils.get_asr import get_asr_text
+import os
 # from web.utils.live2d_control import tts_and_play_audio
 # from flask_restful import Api
 
@@ -71,9 +73,9 @@ def send_audio():
             response = requests.post(url,json=data)
             if response.status_code == 200:
                 print("[done]")
-                with open('web/utils/output.wav', 'wb') as file:
-                    file.write(response.content)
-                print("文件已下载到本地")
+                # with open('web/utils/output.wav', 'wb') as file:
+                #     file.write(response.content)
+                # print("文件已下载到本地")
                 # tts_and_play_audio()
                 return response.content
             else:
@@ -83,6 +85,28 @@ def send_audio():
             return {"error": "Invalid input"}
     else:
         return {"error": "Invalid input"}
-
-
-
+    
+    
+@chat.route('/chat_asr', methods=['POST'])
+def chat_asr():
+    if 'audio' in request.files:
+        audio_file = request.files['audio']
+        save_path = 'web/static/audio/tmp.wav'
+        
+        # 检查路径是否存在，不存在则创建
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        try:
+            audio_file.save(save_path)
+            # 尝试读取文件以验证其有效性
+            with open(save_path, 'rb') as f:
+                file_content = f.read()
+                if file_content:
+                    print("File saved successfully.")
+                else:
+                    print("File is empty or invalid.")
+            text = get_asr_text(save_path)
+            return {"text": text}
+        except Exception as e:
+            print(f"Error saving file: {e}")
+            return {"text": "音频识别失败，请重新录制。"}
+    return {"text": "Invalid input"}

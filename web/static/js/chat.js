@@ -61,12 +61,11 @@ function getNowTime() {
 const example_info = document.getElementById("example_info");
 
 const example_info_msg = {
-  "example_1": "你好，我是 GPT-3 机器人。",
-  "example_2": "你好，我是 GPT-2 机器人。",
-  "example_3": "你好，我是 GPT-1 机器人。",
-  "example_4": "你好，我是 GPT-0 机器人。",
+  example_1: "你好，我是 GPT-3 机器人。",
+  example_2: "你好，我是 GPT-2 机器人。",
+  example_3: "你好，我是 GPT-1 机器人。",
+  example_4: "你好，我是 GPT-0 机器人。",
 };
-
 
 let currentIndex = 0;
 const keys = Object.keys(example_info_msg);
@@ -99,10 +98,6 @@ const typeText = () => {
 };
 // 初始显示
 view_example_info();
-
-
-
-
 
 messageInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
@@ -144,32 +139,54 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 let bubbleCounter = 0; // 全局变量，用于跟踪消息气泡的编号
 
-function sendMessage() {
-  const message = messageInput.value;
+function sendMessage(message,audio_url) {
+  // const message = messageInput.value;
   // console.log(message);
   if (message.trim() === "") {
     return;
   }
   // 创建一个新的消息元素，并添加到聊天框
-  let messageElement = `<div class="chat chat-end">
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full">
-            <img
-                alt="Tailwind CSS chat bubble component"
-                src="../static/img/chatui/user.png" />
-            </div>
-        </div>
-        <div class="chat-header">
-            you
-            <time class="text-xs opacity-50">${getNowTime()}</time>
-        </div>
-        <div class="chat-bubble">${message}</div>
-        </div>
-        `;
+  let messageElement = "";
+  if(audio_url){
+    messageElement = `<div class="chat chat-end">
+          <div class="chat-image avatar">
+              <div class="w-10 rounded-full">
+              <img
+                  alt="Tailwind CSS chat bubble component"
+                  src="../static/img/chatui/user.png" />
+              </div>
+          </div>
+          <div class="chat-header">
+              you
+              <time class="text-xs opacity-50">${getNowTime()}</time>
+          </div>
+          <div class="chat-bubble">${message}
+          <audio src="${audio_url}" controls></audio>
+          </div>
+          </div>
+          `;
+  }else{
+
+    messageElement = `<div class="chat chat-end">
+          <div class="chat-image avatar">
+              <div class="w-10 rounded-full">
+              <img
+                  alt="Tailwind CSS chat bubble component"
+                  src="../static/img/chatui/user.png" />
+              </div>
+          </div>
+          <div class="chat-header">
+              you
+              <time class="text-xs opacity-50">${getNowTime()}</time>
+          </div>
+          <div class="chat-bubble">${message}</div>
+          </div>
+          `;
+  }
   chatMessages.innerHTML += messageElement;
 
-  messageInput.value = "";
-  bubbleCounter++;
+  // messageInput.value = "";
+  // bubbleCounter++;
   getResponse(message);
 }
 
@@ -223,8 +240,6 @@ function sendMessage() {
 //   // 返回处理后的 HTML
 //   return tempDiv.innerHTML;
 // }
-
-
 
 function formateMarkdown(message) {
   var renderer = new marked.Renderer();
@@ -449,8 +464,11 @@ async function fetchChatStream(message, model_name, selectedValue) {
 }
 send_message_btn.addEventListener("click", () => {
   isTyping = false; // 停止显示
-  sendMessage();
+  sendMessage(messageInput.value);
+  bubbleCounter++;
+  messageInput.value = "";
 });
+
 async function fetchChatAudio(message) {
   try {
     const res = await fetch("/chat_audio", {
@@ -490,106 +508,143 @@ async function fetchChatAudio(message) {
   }
 }
 
-var cubism4Model = "../static/Live2D_model/pachan/pachan.model3.json";
+const microphone = document.getElementById("microphone-btn");
+const microphoneIcon = document.getElementById("microphone-icon");
+const recording_dialog = document.getElementById("recording-dialog");
 
-var selected_model = "../static/Live2D_model";
+let mediaRecorder = null;
+let stream = null;
 
-var model_list = "[1,2,3]";
+const toggleUIState = (isRecording) => {
+  if (isRecording) {
+    microphoneIcon.classList.remove("fill-[#8e8e8e]");
+    microphoneIcon.classList.add("fill-[#0eab3d]");
+    send_message_btn.setAttribute("disabled", "disabled");
+    microphone.setAttribute("disabled", "disabled");
+    recording_dialog.showModal();
+  } else {
+    microphoneIcon.classList.remove("fill-[#0eab3d]");
+    microphoneIcon.classList.add("fill-[#8e8e8e]");
+    send_message_btn.removeAttribute("disabled");
+    microphone.removeAttribute("disabled");
+    recording_dialog.close();
+  }
+};
 
-const live2d = PIXI.live2d;
+const startRecording = async () => {
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
+  try {
+    toggleUIState(true);
+    recognition.start();
+  } catch (error) {
+    console.error("An error occurred:", error);
+    recognition.stop();
+    toggleUIState(false);
+  }
 
-(async function main() {
-  const app = new PIXI.Application({
-    view: document.getElementById("canvas"),
-    autoStart: true,
-    resizeTo: window,
-    transparent: true,
-    backgroundAlpha: 0,
+  stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  mediaRecorder = new MediaRecorder(stream);
+  const audioChunks = [];
+
+  mediaRecorder.addEventListener("dataavailable", (event) => {
+    audioChunks.push(event.data);
   });
 
-  const eye_bool = true;
-  const models = await Promise.all([
-    live2d.Live2DModel.from(cubism4Model, { autoInteract: eye_bool }),
-  ]);
+  mediaRecorder.addEventListener("stop", async() => {
+    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    // talk(window.model4, audioUrl);
 
-  models.forEach((model) => {
-    app.stage.addChild(model);
+    // 假设 audioUrl 是一个已经定义并赋值的变量
 
-    const scaleX = innerWidth / model.width;
-    const scaleY = innerHeight / model.height;
+    // await sendTranscriptToBackend(audioUrl);
+    const formData = new FormData();
+    formData.append("audio", audioBlob, "recording.wav");
 
-    // fit the window
-    model.scale.set(Math.min(scaleX, scaleY));
-
-    model.y = innerHeight * 0.1;
-
-    draggable(model);
-  });
-
-  const model4 = models[0];
-
-  model4.x = innerWidth / 2;
-
-  model4.on("hit", (hitAreas) => {
-    if (hitAreas.includes("Body")) {
-      model4.motion("Tap");
+    try {
+      const response = await fetch("/chat_asr", {
+        method: "POST",
+        body: formData,
+      });
+    
+      const responseData = await response.json(); // 假设后端返回的是 JSON 数据
+      const text = responseData['text'];
+    
+      if (typeof text !== 'string') {
+        throw new Error("返回的 text 不是字符串类型");
+      }
+    
+      if (text.trim() === "") {
+        text = "音频识别失败，请重新录制。";
+      }
+      sendMessage(text, audioUrl);
+    } catch (error) {
+      console.error("发生错误:", error);
+      sendMessage("音频识别失败，请重新录制。", audioUrl);
     }
-
-    if (hitAreas.includes("Head")) {
-      model4.expression();
+    
+    // 关闭音频流
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      stream = null;
     }
+    mediaRecorder = null;
+
+    toggleUIState(false);
   });
 
-  // 将 model4 传递出去
-  window.model4 = model4;
-})();
-
-
-function talk(model, audio) {
-  var audio_link = audio; //[Optional arg, can be null or empty] [relative or full url path] [mp3 or wav file] "./Keira.wav"
-  var volume = 1; // [Optional arg, can be null or empty] [0.0 - 1.0]
-  var expression = 8; // [Optional arg, can be null or empty] [index|name of expression]
-  var resetExpression = true; // [Optional arg, can be null or empty] [true|false] [default: true] [if true, expression will be reset to default after animation is over]
-  var crossOrigin = "anonymous"; // [Optional arg, to use not same-origin audios] [DEFAULT: null]
-  console.log("talking...=====>" + model);
-  model.speak(audio_link, {
-    volume: volume,
-    expression: expression,
-    resetExpression: resetExpression,
-    crossOrigin: crossOrigin,
+  const end_recording_btn = document.getElementById("stop-recording-btn");
+  end_recording_btn.addEventListener("click", () => {
+    recognition.stop();
+    mediaRecorder.stop();
+    // recognition = null;
   });
 
-  // Or if you want to keep some things default
-  model.speak(audio_link);
-  model.speak(audio_link, { volume: volume });
-  model.speak(audio_link, {
-    expression: expression,
-    resetExpression: resetExpression,
-  });
-}
+  mediaRecorder.start();
+};
 
-function draggable(model) {
-  model.buttonMode = true;
-  model.on("pointerdown", (e) => {
-    model.dragging = true;
-    model._pointerX = e.data.global.x - model.x;
-    model._pointerY = e.data.global.y - model.y;
-  });
-  model.on("pointermove", (e) => {
-    if (model.dragging) {
-      model.position.x = e.data.global.x - model._pointerX;
-      model.position.y = e.data.global.y - model._pointerY;
-    }
-  });
-  model.on("pointerupoutside", () => (model.dragging = false));
-  model.on("pointerup", () => (model.dragging = false));
-}
+microphone.addEventListener("click", startRecording);
 
-function addFrame(model) {
-  const foreground = PIXI.Sprite.from(PIXI.Texture.WHITE);
-  foreground.width = model.internalModel.width;
-  foreground.height = model.internalModel.height;
-  foreground.alpha = 0.2;
+// 发送录音内容到后端的函数
+// async function sendTranscriptToBackend(audioUrl) {
+//   // 这里可以使用 fetch 或其他方法将 transcript 发送到后端
+//   try {
+//     const res = await fetch("/chat_asr", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ audioUrl: audioUrl }),
+//     });
+    
+//     if (!res.ok) {
+//       throw new Error(`HTTP error! status: ${res.status}`);
+//     }
+    
+//     const responseData = await res.json(); // 假设后端返回的是 JSON 数据
+//     const text = responseData['text'];
+    
+//     if (typeof text !== 'string') {
+//       throw new Error("返回的 text 不是字符串类型");
+//     }
+    
+//     if (text.trim() === "") {
+//       text = "音频识别失败，请重新录制。";
+//     }
+//     sendMessage(text, audioUrl);
 
-  model.addChild(foreground);
-}
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+
+// const audio = new Audio(audioUrl);
+// audio.play();
+// const downloadLink = document.createElement('a');
+// downloadLink.href = audioUrl;
+// downloadLink.download = 'recording.wav';
+// document.body.appendChild(downloadLink);
+// downloadLink.click();
+// document.body.removeChild(downloadLink);
